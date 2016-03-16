@@ -1,0 +1,59 @@
+{
+  "server": {
+    "debug": {
+      "log": ["error","read"],
+      "request": ["error","read"]
+    }
+  },
+  "connections":[{
+    "port":8000,
+    "labels":["api"]
+  }],
+  "registrations":{
+    "$filter":"env",
+    "$base":[
+      {
+        "plugin": {
+          "register": "../../",
+          "options": {
+            "rootResource": "root",
+            "routeDir": "./examples/advanced/routes"
+          }
+        },
+        "options": {
+          "select": ["api"],
+          "routes": {
+            "prefix": "/v1"
+          }
+        }
+      }
+    ],
+    "dev":[
+      {
+        "plugin": {
+          "register": "blipp",
+          "options": {
+            "showStart": true
+          }
+        }
+      },
+      {
+        "plugin": {
+          "register": "good",
+          "options": {
+            "opsInterval": 5000,
+            "reporters": [{
+              "reporter": "good-console",
+              "events": {
+                "request": "*",
+                "response": "*",
+                "error": "*",
+                "log": "*"
+              }
+            }]
+          }
+        }
+      }
+    ]
+  }
+}
