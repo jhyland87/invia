@@ -42,7 +42,9 @@ By default, *Invia* will look for a folder called `/routes` in the root of you p
 
 ## Root Resource
 
-Since the filename containing the resources is prepended to the route path within the path files, you will need to define which route file you want to use as your root resource, this will skip the modification of the path value in the resources. To do this, just add a `rootResource` value to the plugin options, and specify the file you wish to use (without the `.js` extension)
+Since the filename containing the resources is prepended to the route path within the path files, you will need to define which route file you want to use as your root resource, this will skip the modification of the path value in the resources. To do this, just add a `rootResources` value to the plugin options, and specify the file you wish to use (without the `.js` extension), or multiple files in an array.
+
+**Note:** Make sure the value(s) stored in the `rootResources` value are all lowercase, even if the file itself is uppercase
 
 ## Debugging
 
@@ -60,5 +62,4 @@ If you want to display more than one of the above, then just add the desired nam
 
 ## Todo
 
-* Allow users to specify more than one `rootResource` file, skipping path modifications for all contained resources
 * Write unit tests (yeah yeah yeah, I know)

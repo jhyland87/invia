@@ -16,7 +16,7 @@
         "plugin": {
           "register": "../../",
           "options": {
-            "rootResource": "root",
+            "rootResources": [ "root_a", "root_b" ],
             "routeDir": "./examples/advanced/routes"
           }
         },

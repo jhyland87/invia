@@ -16,10 +16,10 @@ const say = {
 
 module.exports = function( plugin, options, next ){
     // Set defaults
-    let rootResource
+    let routeResourceCfg = []
     let routeDir = './routes/'
     // Route file stats
-    const stats = {
+    const routeStats = {
         processed: 0,
         skipped: 0
     }
@@ -27,8 +27,10 @@ module.exports = function( plugin, options, next ){
     if( ! _.isEmpty( options ) ){
         // If a root resource was defined in the options, then set it so it can be processed. The root path will
         // not have the file name prepended to the routes `path` value
-        if( _.isString( options.rootResource ) )
-            rootResource = options.rootResource
+        if( _.isString( options.rootResources ) )
+            routeResourceCfg = [ options.rootResources ]
+        else if( _.isArray( options.rootResources ) )
+            routeResourceCfg = options.rootResources
 
         // Check if a route directory was defined
         if( _.isString( options.routeDir ) )
@@ -37,7 +39,7 @@ module.exports = function( plugin, options, next ){
 
     routeDir = appRoot.resolve( routeDir )
 
-    say.info('%s route directory: %s', _.upperFirst( appTitle ), routeDir )
+    say.info("%s route directory: %s", _.upperFirst( appTitle ), routeDir )
 
     const routes = []
 
@@ -60,21 +62,21 @@ module.exports = function( plugin, options, next ){
             if( ! _.isEmpty( jsMatch ) ) {
                 routeName = _.toLower( jsMatch[ 1 ] )
 
-                say.info( 'Processing resource %s (file: %s)', routeName, filename )
+                say.debug( "Processing resource '%s' (file: %s)", routeName, filename )
 
                 if( _.isUndefined( routes[ routeName ] ) ) {
                     routeResources = require( routePath )
 
                     // If this route name matches the root route name, then skip the path modification
-                    if( routeName === rootResource ) {
-                        say.info( 'Skipping resource path modifications for resource %s, as it is defined as the rootResource', routeName )
+                    if( _.includes( routeResourceCfg, routeName ) ) {
+                        say.info( "Skipping resource path modifications for resource '%s', as it is defined in the rootResources configuration", routeName )
                     }
                     else {
                         // Prepend the path and file name to the routes
                         _.map( routeResources, function( r ) {
                             let newRoute = _.replace( `/${routeName}${r.path}`, '//', '/' )
 
-                            say.debug( 'Updating path %s to %s', r.path, newRoute )
+                            say.debug( "Updating path %s to %s", r.path, newRoute )
 
                             return r.path = newRoute
                         } )
@@ -84,24 +86,24 @@ module.exports = function( plugin, options, next ){
 
                     routes.push( routeName )
 
-                    stats.processed++
+                    routeStats.processed++
                 }
                 else {
                     // Shouldn't really get here, but it helps me sleep at night
-                    say.debug( 'Route %s was already loaded - ignoring this', relativePath )
+                    say.debug( "Route '%s' was already loaded - ignoring this", relativePath )
 
-                    stats.skipped++
+                    routeStats.skipped++
                 }
             }
             else {
-                say.debug( 'Regex match for %s failed, probably because it isn\'t a .js file - skipping', relativePath )
+                say.debug( "Regex match for '%s' failed, probably because it isn't a .js file - skipping", relativePath )
 
-                stats.skipped++
+                routeStats.skipped++
             }
         }
     })( routeDir )
 
-    say.info('Total of %n route files processed via Invia, and %n ignored', stats.processed, stats.skipped)
+    say.info('Total of %s route files processed via Invia, and %s ignored', routeStats.processed, routeStats.skipped)
 
     next()
 }

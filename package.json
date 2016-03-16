@@ -1,6 +1,6 @@
 {
   "name": "invia",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Programmatically setup routes and resources for HapiJS server",
   "main": "index.js",
   "scripts": {
