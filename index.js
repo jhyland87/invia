@@ -41,6 +41,17 @@ module.exports = function( plugin, options, next ){
 
     say.info("%s route directory: %s", _.upperFirst( appTitle ), routeDir )
 
+    try {
+        // Check that its a valid path
+        const routeDirStats = fs.lstatSync( routeDir )
+
+        if ( ! routeDirStats.isDirectory())
+            return next( 'It does not look like '+routeDirStats+' is a directory - verify that the path exists, and it is a directory' )
+    }
+    catch (e) {
+        return next( e )
+    }
+
     const routes = []
 
     ;(function loadRoutes( filename ) {
@@ -75,6 +86,9 @@ module.exports = function( plugin, options, next ){
                         // Prepend the path and file name to the routes
                         _.map( routeResources, function( r ) {
                             let newRoute = _.replace( `/${routeName}${r.path}`, '//', '/' )
+
+                            // Strip off the last /
+                            newRoute = newRoute.replace(/\/$/, "")
 
                             say.debug( "Updating path %s to %s", r.path, newRoute )
 

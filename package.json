@@ -1,18 +1,38 @@
 {
   "name": "invia",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Programmatically setup routes and resources for HapiJS server",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "hapi",
+    "hapijs",
+    "route",
+    "routes",
+    "router",
+    "resources",
+    "hapi-routes",
+    "hapi-router",
+    "hapi-resources",
+    "processor",
+    "route-processor",
+    "hapi-plugin",
+    "hapi-plugins",
+    "api",
+    "automation"
+  ],
   "author": "Justin Hyland <j@linux.com> (http://www.justinhyland.com)",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "app-root-path": "^1.0.0",
     "debug": "^2.2.0",
     "hapi": "^13.2.1",
     "lodash": "^4.6.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "code": "^2.1.1",
+    "lab": "^10.3.0"
+  }
 }
