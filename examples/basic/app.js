@@ -21,8 +21,7 @@ const internals = {
                 register: '../../',
                 options: {
                     rootResource: 'root',
-                    routeDir: './examples/basic/routes',
-                    debug: null
+                    routeDir: './examples/basic/routes'
                 }
             }
         }]
